@@ -1,26 +1,30 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h> 
 
+/* arduino pins */
 const int buzzer = 2; //buzzer to arduino pin 9
-const int ledC = 4; // cervena
-const int ledZ = 3; // zlta
+const int ledC = 4; // red
+const int ledZ = 3; // yellow
 
-const int btn1 = 9;
-const int btn2 = 10;
+const int btn1 = 9; // button 1 
+const int btn2 = 10; // button 2
+/****************/
 
-float voltage_ch1 = 0;
-float voltage_ch2 = 0;
+float voltage_ch1 = 0; //1. measured voltage 
+float voltage_ch2 = 0; //2. measured voltage 
+
+/* bools to help with LCD printing */
 
 bool showBothVals = false;
 bool showSeparate = false;
 bool firstTime = true;
 bool lastCH1 = true;
-int btn1Val;
-int btn2Val;
+/****************/
 
-long prev = 0;
+int btn1Val; // button 1 state
+int btn2Val; // button 2 state
 
-
+/* debouncing variables */
 int buttonState1 = HIGH;   
 int buttonState2 = HIGH;  
           
@@ -31,11 +35,11 @@ unsigned long lastDebounceTime1 = 0;  // the last time the output pin was toggle
 unsigned long lastDebounceTime2 = 0;  // the last time the output pin was toggled
 
 unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
+/****************/
 
+LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 2); // 16x2 LCD. "object" instance
 
-LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 2); // 16x2 LCD.
-
-void greetScreen(){
+void greetingScreen(){
   lcd.setCursor(0, 0);
   lcd.print("2CH voltmeter");
   long prev = millis();
@@ -119,7 +123,7 @@ void setup() {
   digitalWrite(ledC, LOW);
   digitalWrite(ledZ, LOW); 
 
-  greetScreen();
+  greetingScreen();
 }
 
 void loop() {
